@@ -16,7 +16,7 @@ void	SpeedMeter::update()
     {
       _last_interval = millis() - _last_fall;
       _last_fall = millis();
-      _speed = (_radius / (float) _last_interval) * 3600.0; //Something like this
+      _speed = (_radius / (float) _last_interval) * 360.0; //Something like this
       Serial.println(_speed);
       
     }
