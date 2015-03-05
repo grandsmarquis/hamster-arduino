@@ -16,9 +16,15 @@ void	SpeedMeter::update()
     {
       _last_interval = millis() - _last_fall;
       _last_fall = millis();
-      _speed = (_radius / (float) _last_interval) * 360.0; //Something like this
-      Serial.println(_speed);
-      
+      if (_last_interval > 2)
+	{
+	  // We don't want to activate wheel if it is for only one turn
+	}
+      else
+	{
+	  _speed = (_radius / (float) _last_interval) * 360.0; //Something like this
+	  Serial.println(_speed);
+	}
     }
   _previous_state = state;
   
