@@ -103,3 +103,12 @@ String Wifi::getAPList()
   return (wifi->getAPList());
 }
 
+bool Wifi::createTCP(String addr, uint32_t port)
+{
+  return (wifi->createTCP(addr, port));
+}
+
+bool Wifi::releaseTCP()
+{
+  return (wifi->releaseTCP());
+}
