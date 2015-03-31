@@ -39,6 +39,7 @@ public:
   bool		stopTCPServer(void);
   bool		releaseTCP(uint8_t mux_id);
   uint32_t	receive(uint8_t *mux_id, uint8_t *buffer, uint32_t buffer_size, uint32_t timeout = 1000);
+  uint32_t	receive(uint8_t *buffer, uint32_t buffer_size, uint32_t timeout = 1000);
 };
 
 #endif

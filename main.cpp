@@ -7,6 +7,9 @@ SpeedMeter *sensor;
 Wifi	   *wifi;
 bool	   hasClient = false;
 
+#define PORT    (8090)
+#define IP   "192.168.4.100"
+
 void	receive()
 {
   uint8_t buffer[128] = {0};
@@ -45,15 +48,10 @@ void initAP()
     Serial.println("[OK] Creating ap");
   else
     Serial.println("[FAIL] Creating ap");
-  /*  if (wifi->reset())
-    Serial.println("[OK] Reset");
+  if (wifi->disableMUX())
+    Serial.println("[OK] Disable MUX");
   else
-    Serial.println("[FAIL] Reset");
-  */
-  if (wifi->createTCPServer(8080, 10))
-    Serial.println("[OK] Creating TCP Server");
-  else
-    Serial.println("[FAIL] Creating TCP Server");
+    Serial.println("[FAIL] Disable Mux");
 }
 
 void joinAP(String name, String password)
@@ -74,11 +72,23 @@ void	setup()
 
   ping();
   initAP();
-
-     while (!hasClient)
+  
+  while (!hasClient)
     {
       String res = wifi->getConnectedIPs();
-      Serial.println(res.c_str());
+      if (-1 != res.indexOf(','))
+	{
+
+	  Serial.println("[START] sleep");
+	  delay(10000);
+	  	  Serial.println("[START] TCP");
+	  String ip = res.substring(0, res.indexOf(','));
+	  Serial.println(ip);
+	  if (wifi->createTCP(IP, PORT))
+	    Serial.println("[OK] TCP");
+	  else
+	    Serial.println("[FAAAAAAAAAAAAAIL] TCP");
+	}
     }
   
   //  sensor = new SpeedMeter(2, 1, 10);

@@ -23,7 +23,7 @@ String Wifi::getVersion(void)
 
 bool Wifi::createAP(String name, String password)
 {
-  boolean res = wifi->setOprToSoftAP();
+  boolean res = wifi->setOprToStationSoftAP();
   if (res)
     res = wifi->setSoftAPParam(name, password);
   return (res);
@@ -83,6 +83,11 @@ bool Wifi::releaseTCP(uint8_t mux_id)
 uint32_t Wifi::receive(uint8_t *mux_id, uint8_t *buffer, uint32_t buffer_size, uint32_t timeout)
 {
   return (wifi->recv(mux_id, buffer, sizeof(buffer), timeout));
+}
+
+uint32_t Wifi::receive(uint8_t *buffer, uint32_t buffer_size, uint32_t timeout)
+{
+  return (wifi->recv(buffer, sizeof(buffer), timeout));
 }
 
 bool Wifi::joinAP(String name, String password)
