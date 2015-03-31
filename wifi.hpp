@@ -26,6 +26,7 @@ public:
   bool		joinAP(String name, String password);
   String	getAPList(void);
   String	getLocalIP(void);
+  bool		leaveAP(void);
   
   //AP CREATE
   bool		createAP(String name, String password);
@@ -40,6 +41,9 @@ public:
   bool		releaseTCP(uint8_t mux_id);
   uint32_t	receive(uint8_t *mux_id, uint8_t *buffer, uint32_t buffer_size, uint32_t timeout = 1000);
   uint32_t	receive(uint8_t *buffer, uint32_t buffer_size, uint32_t timeout = 1000);
+  bool		send(uint8_t mux_id, const uint8_t *buffer, uint32_t len);
+  bool		send(const uint8_t *buffer, uint32_t len);
+
 };
 
 #endif

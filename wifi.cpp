@@ -16,6 +16,11 @@ bool Wifi::reset(void)
   return (wifi->restart());
 }
 
+bool Wifi::leaveAP(void)
+{
+  return (wifi->leaveAP());
+}
+
 String Wifi::getVersion(void)
 {
   return (wifi->getVersion());
@@ -116,4 +121,14 @@ bool Wifi::createTCP(String addr, uint32_t port)
 bool Wifi::releaseTCP()
 {
   return (wifi->releaseTCP());
+}
+
+bool Wifi::send(uint8_t mux_id, const uint8_t *buffer, uint32_t len)
+{
+  return (wifi->send(mux_id, buffer, len));
+}
+
+bool Wifi::send(const uint8_t *buffer, uint32_t len)
+{
+  return (wifi->send(buffer, len));
 }
