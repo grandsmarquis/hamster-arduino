@@ -1,4 +1,3 @@
-
 #include "main.hpp"
 #include "speedmeter/speedmeter.hpp"
 #include "wifi.hpp"
