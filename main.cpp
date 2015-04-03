@@ -104,7 +104,9 @@ void	doBinding()
       delay(100);
     }
   Serial.println("[OK] connection infos received");
+  
   joinAP(storage->ssid, storage->password);
+  
   //if we are here we have a connection to the app
   //it means we have his IP and can receive and send datas throught TCP
   

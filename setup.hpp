@@ -7,6 +7,7 @@
 #include "wifi.hpp"
 
 #define SETUP_DELIM_CHAR ':'
+#define SETUP_JOIN_TRIES 5
 
 namespace Setup {
 
