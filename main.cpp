@@ -1,10 +1,14 @@
 #include "main.hpp"
 #include "speedmeter/speedmeter.hpp"
 #include "wifi.hpp"
+#include "button.hpp"
+#include "storage.hpp"
 
 SpeedMeter *sensor;
 Wifi	   *wifi;
-bool	   hasClient = false;
+Storage	   *storage;
+
+
 
 #define PORT    (8090)
 #define IP   "192.168.4.100"
@@ -31,6 +35,18 @@ void	receive()
   }
 }
 
+bool	sendSerial()
+{
+  uint32_t len = 3 + SERIAL_LEN + 1;
+  char buffer[len];
+
+  strcpy(buffer, "ok:");
+  strncpy(&(buffer[3]), (char *) storage->getSerial(), SERIAL_LEN);
+  buffer[len - 1] = 0;
+  Serial.print(buffer);
+  return (wifi->send((const uint8_t*) buffer, strlen(buffer)));
+}
+
 void	ping()
 {
    if (wifi->isAlive())
@@ -43,7 +59,7 @@ void	ping()
 
 void initAP()
 {
-  if (wifi->createAP("This is a testicule", "password"))
+  if (wifi->createAP("HAMSTER_00001", "password"))
     Serial.println("[OK] Creating ap");
   else
     Serial.println("[FAIL] Creating ap");
@@ -63,37 +79,58 @@ void joinAP(String name, String password)
   Serial.println(wifi->getLocalIP().c_str());  
 }
 
-void	setup()
+void	initEverything()
 {
   Serial.begin(9600);
 
+  storage = new Storage();
   wifi = new Wifi(Serial1);
-
-  ping();
-  initAP();
-  
-  while (!hasClient)
+  while (!wifi->isAlive())
     {
+      
+    }
+}
+
+void	doBinding()
+{
+  String ip;
+  boolean hasConnection = false;
+  
+  initAP();
+  while (!hasConnection)
+    {
+      delay(500);
+      Serial.println("[Waiting] Waiting for connecting device");
       String res = wifi->getConnectedIPs();
       if (-1 != res.indexOf(','))
 	{
-
 	  Serial.println("[START] sleep");
-	  delay(10000);
-	  	  Serial.println("[START] TCP");
-	  String ip = res.substring(0, res.indexOf(','));
-	  Serial.println(ip);
-	  if (wifi->createTCP(IP, PORT))
-	    Serial.println("[OK] TCP");
-	  else
-	    Serial.println("[FAAAAAAAAAAAAAIL] TCP");
+	  delay(1000);
+	  Serial.println("[START] TCP");
+	  ip = res.substring(0, res.indexOf(','));
+	  if (wifi->createTCP(ip, PORT))
+	    hasConnection = true;
 	}
     }
+  Serial.println("[OK] We are connected");
+  while (true)
+    {
+      delay(1000);
+      if (sendSerial())
+	{
+	  Serial.println("[OK] SERIAL SENT");
+	}
+    }
+  //if we are here we have a connection to the app
+  //it means we have his IP and can receive and send datas throught TCP
   
-  //  sensor = new SpeedMeter(2, 1, 10);
 }
 
-
+void	setup()
+{
+  initEverything();
+  doBinding();
+}
 
 void	loop()
 {
