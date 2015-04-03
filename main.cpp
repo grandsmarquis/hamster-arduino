@@ -4,6 +4,8 @@
 #include "button.hpp"
 #include "storage.hpp"
 
+#include "setup.hpp"
+
 SpeedMeter *sensor;
 Wifi	   *wifi;
 Storage	   *storage;
@@ -35,18 +37,6 @@ void	receive()
   }
 }
 
-bool	sendSerial()
-{
-  uint32_t len = 3 + SERIAL_LEN + 1;
-  char buffer[len];
-
-  strcpy(buffer, "ok:");
-  strncpy(&(buffer[3]), (char *) storage->getSerial(), SERIAL_LEN);
-  buffer[len - 1] = 0;
-  Serial.print(buffer);
-  return (wifi->send((const uint8_t*) buffer, strlen(buffer)));
-}
-
 void	ping()
 {
    if (wifi->isAlive())
@@ -55,18 +45,6 @@ void	ping()
     Serial.println("[FAIL] Wifi is not alive");
   String version = wifi->getVersion();
   Serial.println("Version :: " + version);
-}
-
-void initAP()
-{
-  if (wifi->createAP("HAMSTER_00001", "password"))
-    Serial.println("[OK] Creating ap");
-  else
-    Serial.println("[FAIL] Creating ap");
-  if (wifi->disableMUX())
-    Serial.println("[OK] Disable MUX");
-  else
-    Serial.println("[FAIL] Disable Mux");
 }
 
 void joinAP(String name, String password)
@@ -96,7 +74,7 @@ void	doBinding()
   String ip;
   boolean hasConnection = false;
   
-  initAP();
+  Setup::initAccessPoint(storage, wifi);
   while (!hasConnection)
     {
       delay(500);
@@ -104,9 +82,8 @@ void	doBinding()
       String res = wifi->getConnectedIPs();
       if (-1 != res.indexOf(','))
 	{
-	  Serial.println("[START] sleep");
 	  delay(1000);
-	  Serial.println("[START] TCP");
+	  Serial.println("[START] Try TCP");
 	  ip = res.substring(0, res.indexOf(','));
 	  if (wifi->createTCP(ip, PORT))
 	    hasConnection = true;
@@ -116,11 +93,18 @@ void	doBinding()
   while (true)
     {
       delay(1000);
-      if (sendSerial())
+      if (Setup::sendSerialNumber(storage, wifi))
 	{
 	  Serial.println("[OK] SERIAL SENT");
 	}
     }
+  while (!Setup::receiveConnectionInformations(storage, wifi))
+    {
+      Serial.println("[OK] Waiting to receive connection infos");
+      delay(100);
+    }
+  Serial.println("[OK] connection infos received");
+  joinAP(storage->ssid, storage->password);
   //if we are here we have a connection to the app
   //it means we have his IP and can receive and send datas throught TCP
   

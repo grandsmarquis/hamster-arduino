@@ -11,9 +11,12 @@ class		Storage {
   
 private:
   uint8_t serial[SERIAL_LEN] = {'0', '0', '0', '0', '0', '0', '0', '0'};
-  
-public:
 
+public:
+  
+  String ssid;
+  String password;
+  
   Storage();
   uint8_t *getSerial();
   
