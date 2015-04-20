@@ -12,8 +12,7 @@ Storage	   *storage;
 
 
 
-#define PORT    (8090)
-#define IP   "192.168.4.100"
+#define PORT    (31664)
 
 void	receive()
 {
@@ -47,16 +46,6 @@ void	ping()
   Serial.println("Version :: " + version);
 }
 
-void joinAP(String name, String password)
-{
-  if (wifi->joinAP(name, password))
-    Serial.println("[OK] Joined AP");
-  else
-    Serial.println("[FAIL] Joined AP");
-  Serial.print("IP: ");
-  Serial.println(wifi->getLocalIP().c_str());  
-}
-
 void	initEverything()
 {
   Serial.begin(9600);
@@ -72,9 +61,9 @@ void	initEverything()
 void	doBinding()
 {
   String ip;
-  boolean hasConnection = false;
-  
+  bool hasConnection = false;
   Setup::initAccessPoint(storage, wifi);
+  delay(1000);
   while (!hasConnection)
     {
       delay(500);
@@ -82,34 +71,48 @@ void	doBinding()
       String res = wifi->getConnectedIPs();
       if (-1 != res.indexOf(','))
 	{
-	  delay(1000);
-	  Serial.println("[START] Try TCP");
+	  delay(500);
 	  ip = res.substring(0, res.indexOf(','));
+	  Serial.println("[START] Try TCP with : " + ip);
 	  if (wifi->createTCP(ip, PORT))
 	    hasConnection = true;
 	}
     }
   Serial.println("[OK] We are connected");
-  while (true)
+  delay(500);
+  while (!Setup::sendSerialNumber(storage, wifi))
     {
       delay(1000);
-      if (Setup::sendSerialNumber(storage, wifi))
-	{
-	  Serial.println("[OK] SERIAL SENT");
-	}
+      Serial.println("[OK] SERIAL SENT");
     }
   while (!Setup::receiveConnectionInformations(storage, wifi))
     {
       Serial.println("[OK] Waiting to receive connection infos");
-      delay(100);
+      delay(1000);
     }
-  Serial.println("[OK] connection infos received");
+  //  Serial.println("[OK] connection infos received : " + storage->ssid + " " + storage->password);
+  delay(2000);
+  wifi->releaseTCP();
   
-  joinAP(storage->ssid, storage->password);
-  
+  //storage->ssid = "Numericable-9813";
+  //storage->password = "CQDKRP7SV37C"; 
+  //storage->ssid = "oOoOoOoO0OoOoO0oOoo0oOoOo000OoOo";
+  //storage->password = "CALIFORNIA7CZK279";
+  //  joinAP(storage->ssid, storage->password);
+  //wifi->reset();
+  while (!wifi->isAlive())
+    {
+      
+    }
+  while (!Common::joinAccessPoint(storage, wifi))
+    {
+      Serial.println("[FAIL] Connecting to SSID");
+    }
   //if we are here we have a connection to the app
   //it means we have his IP and can receive and send datas throught TCP
-  
+  Serial.println("[OK] We try to make request");
+  delay(1000);
+  Common::doAvailableRequest(storage, wifi);
 }
 
 void	setup()
@@ -120,7 +123,7 @@ void	setup()
 
 void	loop()
 {
-   receive();
+  //   receive();
   //sensor->update();
   //  Serial.print("Loop");
 }

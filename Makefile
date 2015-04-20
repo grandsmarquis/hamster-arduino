@@ -30,7 +30,7 @@ LOCAL_CPP_SRCS	?= $(wildcard *.cpp) $(wildcard */*.cpp)
 CXXFLAGS	+= -pedantic -Wall -Wextra
 CFLAGS_STD	= -lm
 
-ARDUINO_LIBS	=
+ARDUINO_LIBS	= EEPROM
 
 # Custom Rules for easing :)
 re:		clean all

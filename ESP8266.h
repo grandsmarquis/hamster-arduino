@@ -89,7 +89,7 @@ class ESP8266 {
     String getVersion(void);
     
     /**
-     * Set operation mode to staion. 
+    * Set operation mode to staion. 
      * 
      * @retval true - success.
      * @retval false - failure.

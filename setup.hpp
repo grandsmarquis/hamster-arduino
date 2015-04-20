@@ -5,6 +5,7 @@
 #include "main.hpp"
 #include "storage.hpp"
 #include "wifi.hpp"
+#include "common.hpp"
 
 #define SETUP_DELIM_CHAR ':'
 #define SETUP_JOIN_TRIES 5
