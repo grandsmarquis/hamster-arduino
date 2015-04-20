@@ -3,6 +3,7 @@
 #include "wifi.hpp"
 #include "button.hpp"
 #include "storage.hpp"
+#include "light.hpp"
 
 #include "setup.hpp"
 

@@ -15,7 +15,7 @@ namespace Setup {
   bool	  initAccessPoint(Storage *storage, Wifi *wifi);
   bool    sendSerialNumber(Storage *storage, Wifi *wifi);
   bool    receiveConnectionInformations(Storage *storage, Wifi *wifi);
-  void	  doBinfing(Storage *storage, Wifi *wifi);
+  void	  doBinding(Storage *storage, Wifi *wifi);
 }
 
 #endif
