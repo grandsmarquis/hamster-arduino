@@ -2,6 +2,8 @@
 #ifndef	__H_LIGHT__
 #define	__H_LIGHT__
 
+#include "main.hpp"
+
 class Light {
 
 private:

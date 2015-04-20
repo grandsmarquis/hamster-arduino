@@ -10,7 +10,7 @@
 SpeedMeter *sensor;
 Wifi	   *wifi;
 Storage	   *storage;
-
+Light	   *light;
 
 
 #define PORT    (31664)
@@ -45,6 +45,7 @@ void	initEverything()
 
   storage = new Storage();
   wifi = new Wifi(SERIAL_WIFI);
+  light = new Light(2);
   while (!wifi->isAlive())
     {
       
