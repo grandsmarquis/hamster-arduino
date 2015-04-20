@@ -6,7 +6,7 @@ Wifi::Wifi(HardwareSerial &serial)
   wifi = new ESP8266(serial);
 }
 
-bool Wifi::isAlive(void)
+inline bool Wifi::isAlive(void)
 {
   return (wifi->kick());
 }

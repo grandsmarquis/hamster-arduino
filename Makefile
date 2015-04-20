@@ -27,7 +27,7 @@ AVRDUDE_CONF	= /etc/avrdude/avrdude.conf
 LOCAL_C_SRCS	?= $(wildcard *.c) $(wildcard */*.c)
 LOCAL_CPP_SRCS	?= $(wildcard *.cpp) $(wildcard */*.cpp)
 
-CXXFLAGS	+= -pedantic -Wall -Wextra
+CXXFLAGS	+= 
 CFLAGS_STD	= -lm
 
 ARDUINO_LIBS	= EEPROM

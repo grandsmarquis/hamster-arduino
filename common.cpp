@@ -4,18 +4,23 @@
 bool Common::joinAccessPoint(Storage *storage, Wifi *wifi)
 {
   bool res = false;
-  //  Serial.println("__JOINING:"  );
-  //  Serial.println("SSID: " + storage->ssid);
-  //  Serial.println("PASSWORD: " + storage->password  );
-  // res = wifi->joinAP(storage->ssid, storage->password);
-  if (res)
-    Serial.println("[OK] Joined AP");
-  else
-    Serial.println("[FAIL] Joined AP");
+  WifiCredentials wifiinfos;
+  storage->getWifi(&wifiinfos);
+  DEBUG_PRINT("__JOINING:"  );
+  DEBUG_PRINT("SSID: " + String(wifiinfos.SSID));
+  DEBUG_PRINT("PASSWORD: " + String(wifiinfos.password));
+  res = wifi->joinAP(String(wifiinfos.SSID), String(wifiinfos.password));
   if (res)
     {
-      Serial.print("IP: ");
-      Serial.println(wifi->getLocalIP().c_str());
+      DEBUG_PRINT("[OK] Joined AP");
+    }
+  else
+    {
+      DEBUG_PRINT("[FAIL] Joined AP");
+    }
+  if (res)
+    {
+      DEBUG_PRINT(wifi->getLocalIP().c_str());
     }
   wifi->disableMUX();
   return (res);
@@ -33,7 +38,6 @@ bool Common::readAnswer(Storage *storage, Wifi * wifi)
 
   while ((len =  wifi->receive(buffer, 120, 1000)))
     {
-      Serial.println("receive: ");
       buffer[len] = 0;
       String line((char *) buffer);
       Serial.println(line);
@@ -83,28 +87,28 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi)
   if (wifi->createTCP(url, API_PORT))
     {
       delay(200);
-      Serial.println("[OK] creating connection to AvailableURL");
+      DEBUG_PRINT("[OK] creating connection to AvailableURL");
       if (wifi->send((const uint8_t*)request.c_str(), request.length()))
 	{
-	  Serial.println("[OK] Sent request");
+	  DEBUG_PRINT("[OK] Sent request");
 	}
       else
 	{
-	  Serial.println("[FAIL] Sent request");
+	  DEBUG_PRINT("[FAIL] Sent request");
 	}
       if (Common::readAnswer(storage, wifi))
 	{
-	  Serial.println("[OK] SUCCESS SENDING AVAILABLE INFOS");
+	  DEBUG_PRINT("[OK] SUCCESS SENDING AVAILABLE INFOS");
 	}
       else
 	{
-	  Serial.println("[FAIL] !!!!!");
+	  DEBUG_PRINT("[FAIL] !!!!!");
 	}
 	
     }
   else
     {
-      Serial.println("[FAIL] creating connection to AvailableURL");
+      DEBUG_PRINT("[FAIL] creating connection to AvailableURL");
     }
   
 }

@@ -12,7 +12,11 @@
 
 struct WifiCredentials {
   char SSID[SSID_LEN];
-  char PASSWORD[PASSWORD_LEN];
+  char password[PASSWORD_LEN];
+};
+
+struct SerialNumber {
+  char serial[SERIAL_LEN];
 };
 
 class		Storage {
@@ -29,6 +33,10 @@ public:
   uint8_t *getSerial();
 
   void getWifi(WifiCredentials *wifi);
+  void setWifi(WifiCredentials *wifi);
+  void getSerial(SerialNumber *sn);
+  void setSerial(SerialNumber *sn);
+  
   void read(int address, char *buffer, int len);
   void write(int address, char *buffer, int len);
   

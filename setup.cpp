@@ -5,14 +5,7 @@ bool  Setup::initAccessPoint(Storage *storage, Wifi *wifi)
 {
   bool res;
   res = wifi->createAP("HAMSTER-SPINNER", "password");
-  if (res)
-    Serial.println("[OK] Creating ap");
-  else
-    Serial.println("[FAIL] Creating ap");
-  if (wifi->disableMUX())
-    Serial.println("[OK] Disable MUX");
-  else
-    Serial.println("[FAIL] Disable Mux");
+  res = wifi->disableMUX();
   return (res);
 }
 
@@ -25,7 +18,7 @@ bool    Setup::sendSerialNumber(Storage *storage, Wifi *wifi)
   strncpy(&(buffer[8]), (char *) storage->getSerial(), SERIAL_LEN);
   buffer[len - 2] = '\n';
   buffer[len - 1] = 0;
-  Serial.print(buffer);
+  DEBUG_PRINT(buffer);
   return (wifi->send((const uint8_t*) buffer, strlen(buffer)));
 }
 
@@ -43,7 +36,7 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
 
   while ((len =  wifi->receive(buffer, 120, 1000)))
     {
-      Serial.println("receive: ");
+      DEBUG_PRINT("receive: ");
       buffer[len] = 0;
       String line((char *) buffer);
       Serial.println(line);
@@ -88,4 +81,54 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
      }
   
   return (false);
+}
+
+void Setup::doBinding(Storage *storage, Wifi *wifi)
+{
+  String ip;
+  bool hasConnection = false;
+  Setup::initAccessPoint(storage, wifi);
+  delay(1000);
+  while (!hasConnection)
+    {
+      delay(500);
+      DEBUG_PRINT("[Waiting] Waiting for connecting device");
+      String res = wifi->getConnectedIPs();
+      if (-1 != res.indexOf(','))
+	{
+	  delay(500);
+	  ip = res.substring(0, res.indexOf(','));
+	  DEBUG_PRINT("[START] Try TCP with : " + ip);
+	  if (wifi->createTCP(ip, BINDING_PORT))
+	    hasConnection = true;
+	}
+    }
+  DEBUG_PRINT("[OK] We are connected");
+  delay(500);
+  while (!Setup::sendSerialNumber(storage, wifi))
+    {
+      delay(1000);
+      DEBUG_PRINT("[OK] SERIAL SENT");
+    }
+  while (!Setup::receiveConnectionInformations(storage, wifi))
+    {
+      DEBUG_PRINT("[OK] Waiting to receive connection infos");
+      delay(1000);
+    }
+  //  Serial.println("[OK] connection infos received : " + storage->ssid + " " + storage->password);
+  delay(2000);
+  wifi->releaseTCP();
+  while (!wifi->isAlive())
+    {
+
+    }
+  while (!Common::joinAccessPoint(storage, wifi))
+    {
+      DEBUG_PRINT("[FAIL] Connecting to SSID");
+    }
+  //if we are here we have a connection to the app
+  //it means we have his IP and can receive and send datas throught TCP
+  DEBUG_PRINT("[OK] We try to make request");
+  delay(1000);
+  Common::doAvailableRequest(storage, wifi);
 }
