@@ -9,10 +9,12 @@
 
 #define SSID_LEN 40
 #define PASSWORD_LEN 40
+#define API_LEN 40
 
 struct WifiCredentials {
   char SSID[SSID_LEN];
   char password[PASSWORD_LEN];
+  char apikey[API_LEN];
 };
 
 struct SerialNumber {

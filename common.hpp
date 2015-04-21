@@ -13,8 +13,8 @@
 
 namespace Common {
 
-  bool joinAccessPoint(Storage *storage, Wifi *wifi);
-  bool doAvailableRequest(Storage *storage, Wifi *wifi);
+  bool joinAccessPoint(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos);
+  bool doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos);
   bool readAnswer(Storage *storage, Wifi *wifi);
   bool doRequest(Storage *storage, Wifi *wifi, String type, String request);
   

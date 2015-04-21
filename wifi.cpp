@@ -28,12 +28,12 @@ String Wifi::getVersion(void)
 
 bool Wifi::createAP(String name, String password)
 {
-  bool res;// = wifi->setSoftAPParam(name, password);
-  delay(200);
+  wifi->leaveAP();
+  bool res = wifi->setSoftAPParam(name, password);
+  delay(1000);
   res = wifi->setOprToStationSoftAP();
   delay(100);
-  if (res)
-    res = wifi->setSoftAPParam(name, 0, 2);
+  //  if (res)
   return (res);
 }
 

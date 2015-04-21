@@ -34,12 +34,12 @@ void Storage::write(int address, char *buffer, int len)
 
 void Storage::getWifi(WifiCredentials *wifi)
 {
-  this->read(SERIAL_LEN + 1, (char *) wifi, sizeof(wifi));
+  this->read(SERIAL_LEN + 1, (char *) wifi, sizeof(*wifi));
 }
 
 void Storage::setWifi(WifiCredentials *wifi)
 {
-  this->write(SERIAL_LEN + 1, (char *) wifi, sizeof(wifi));
+  this->write(SERIAL_LEN + 1, (char *) wifi, sizeof(*wifi));
 }
 
 void Storage::getSerial(SerialNumber *sn)

@@ -5,7 +5,7 @@ bool  Setup::initAccessPoint(Storage *storage, Wifi *wifi)
 {
   bool res;
   res = wifi->createAP("HAMSTER-SPINNER", "password");
-  res = wifi->disableMUX();
+  //  res = wifi->disableMUX();
   return (res);
 }
 
@@ -19,7 +19,7 @@ bool    Setup::sendSerialNumber(Storage *storage, Wifi *wifi)
   buffer[len - 2] = '\n';
   buffer[len - 1] = 0;
   DEBUG_PRINT(buffer);
-  return (wifi->send((const uint8_t*) buffer, strlen(buffer)));
+  return (wifi->send((const uint8_t*) buffer, len));
 }
 
 bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
@@ -73,9 +73,14 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
 	}
       if (state == 4)
 	{
-	  //	  storage->ssid = ssid;
-	  //	  storage->password = password;
-	  //	  storage->apikey = id;
+	  WifiCredentials w;
+	  ssid.toCharArray((w.SSID), SSID_LEN);
+	  password.toCharArray((w.password), PASSWORD_LEN);
+	  id.toCharArray((w.apikey), API_LEN);
+	  DEBUG_PRINT(w.SSID);
+	  DEBUG_PRINT(w.password);
+	  DEBUG_PRINT(w.apikey);
+	  storage->setWifi(&w);
 	  return (true);
 	}
      }
@@ -85,13 +90,16 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
 
 void Setup::doBinding(Storage *storage, Wifi *wifi)
 {
+  /*
+
   String ip;
   bool hasConnection = false;
   Setup::initAccessPoint(storage, wifi);
   delay(1000);
+  wifi->disableMUX();
   while (!hasConnection)
     {
-      delay(500);
+      delay(1000);
       DEBUG_PRINT("[Waiting] Waiting for connecting device");
       String res = wifi->getConnectedIPs();
       if (-1 != res.indexOf(','))
@@ -122,7 +130,12 @@ void Setup::doBinding(Storage *storage, Wifi *wifi)
     {
 
     }
-  while (!Common::joinAccessPoint(storage, wifi))
+
+
+  */
+  WifiCredentials wifiinfos;
+  storage->getWifi(&wifiinfos);
+  while (!Common::joinAccessPoint(storage, wifi, &wifiinfos))
     {
       DEBUG_PRINT("[FAIL] Connecting to SSID");
     }
@@ -130,5 +143,5 @@ void Setup::doBinding(Storage *storage, Wifi *wifi)
   //it means we have his IP and can receive and send datas throught TCP
   DEBUG_PRINT("[OK] We try to make request");
   delay(1000);
-  Common::doAvailableRequest(storage, wifi);
+  Common::doAvailableRequest(storage, wifi, &wifiinfos);
 }

@@ -9,10 +9,10 @@
 #endif
 #endif
 
-#define BINDING_PORT	(31664)
+#define BINDING_PORT	(31665)
 
-#define HAS_DEBUG 0
-#define SERIAL_DEBUG Serial
+#define HAS_DEBUG 1
+#define SERIAL_DEBUG (Serial)
 
 #define SERIAL_WIFI Serial1
 

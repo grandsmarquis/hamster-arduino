@@ -1,15 +1,13 @@
 
 #include "common.hpp"
 
-bool Common::joinAccessPoint(Storage *storage, Wifi *wifi)
+bool Common::joinAccessPoint(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos)
 {
   bool res = false;
-  WifiCredentials wifiinfos;
-  storage->getWifi(&wifiinfos);
   DEBUG_PRINT("__JOINING:"  );
-  DEBUG_PRINT("SSID: " + String(wifiinfos.SSID));
-  DEBUG_PRINT("PASSWORD: " + String(wifiinfos.password));
-  res = wifi->joinAP(String(wifiinfos.SSID), String(wifiinfos.password));
+  DEBUG_PRINT("SSID: " + String(wifiinfos->SSID));
+  DEBUG_PRINT("PASSWORD: " + String(wifiinfos->password));
+  res = wifi->joinAP(String(wifiinfos->SSID), String(wifiinfos->password));
   if (res)
     {
       DEBUG_PRINT("[OK] Joined AP");
@@ -67,15 +65,18 @@ bool Common::readAnswer(Storage *storage, Wifi * wifi)
   return (false);
 }
 
-bool Common::doAvailableRequest(Storage *storage, Wifi *wifi)
+bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos)
 {
   bool res = false;
 
-  String request = "PUT ";
-  String content = "{\"device_key\" : \"" ;//+ storage->apikey;
-  content += "\"}";
+  String request = "POST ";
   request += "/products/" + String(String((char *) storage->getSerial()));
-  request += " HTTP/1.1";
+  request += "HTTP/1.1";
+  String content = "{\"device_key\" : \"" + String(wifiinfos->apikey);
+  content += "\"}";
+  request += "\n";
+  request += "Host: ";
+  request += API_URL;
   request += "\nContent-Type: application/json";
   request += "\nContent-Length: ";
   request += String(content.length());
@@ -83,7 +84,7 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi)
   request += content;
   String url = API_URL;
   Serial.println(url);
-    Serial.println(request);
+  Serial.println(request);
   if (wifi->createTCP(url, API_PORT))
     {
       delay(200);
