@@ -33,7 +33,6 @@ bool Common::readAnswer(Storage *storage, Wifi * wifi)
   int pos = 0;
   String answer;
 
-
   while ((len =  wifi->receive(buffer, 120, 1000)))
     {
       buffer[len] = 0;

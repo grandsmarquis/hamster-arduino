@@ -6,6 +6,8 @@
 #include "light.hpp"
 
 #include "setup.hpp"
+#include "common.hpp"
+#include "tools.hpp"
 
 SpeedMeter *sensor;
 Wifi	   *wifi;
@@ -44,6 +46,7 @@ void	resetButtonInterrupt()
 void	setup()
 {
   initEverything();
+  Tools::writeSerialNumber(storage, "SN-Lolilolol");
 }
 
 void	loop()
