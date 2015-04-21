@@ -24,15 +24,10 @@ struct SerialNumber {
 class		Storage {
   
 private:
-  uint8_t serial[SERIAL_LEN] = {'S', 'N', '-', 'R', 'J', 'L', '3', '7', '0', 'J', 'O', 'U', '8', 0};
-
   
 public:
-  
-
-  
+    
   Storage();
-  uint8_t *getSerial();
 
   void getWifi(WifiCredentials *wifi);
   void setWifi(WifiCredentials *wifi);

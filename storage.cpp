@@ -5,11 +5,6 @@ Storage::Storage()
 {
 }
 
-uint8_t	*Storage::getSerial()
-{
-  return (this->serial);
-}
-
 void Storage::read(int address, char *buffer, int len)
 {
   int i = 0;
@@ -44,8 +39,10 @@ void Storage::setWifi(WifiCredentials *wifi)
 
 void Storage::getSerial(SerialNumber *sn)
 {
+  this->read(0, (char *) sn, sizeof(*sn));
 }
 
 void Storage::setSerial(SerialNumber *sn)
 {
+  this->write(0, (char *) sn, sizeof(*sn));
 }

@@ -68,9 +68,15 @@ bool Common::readAnswer(Storage *storage, Wifi * wifi)
 bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos)
 {
   bool res = false;
-
+  
+  
   String request = "POST ";
-  request += "/products/" + String(String((char *) storage->getSerial()));
+  {
+    SerialNumber sn;
+    storage->getSerial(&sn);
+    request += "/products/" + String(sn.serial);    
+  }
+
   request += "HTTP/1.1";
   String content = "{\"device_key\" : \"" + String(wifiinfos->apikey);
   content += "\"}";

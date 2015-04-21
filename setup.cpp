@@ -13,9 +13,11 @@ bool    Setup::sendSerialNumber(Storage *storage, Wifi *wifi)
 {
   uint32_t len = 8 + SERIAL_LEN + 2;
   char buffer[len];
+  SerialNumber sn;
 
+  storage->getSerial(&sn);
   strcpy(buffer, "SUCCESS:");
-  strncpy(&(buffer[8]), (char *) storage->getSerial(), SERIAL_LEN);
+  strncpy(&(buffer[8]), (char *) sn.serial, SERIAL_LEN);
   buffer[len - 2] = '\n';
   buffer[len - 1] = 0;
   DEBUG_PRINT(buffer);
