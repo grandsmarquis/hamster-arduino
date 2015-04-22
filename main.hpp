@@ -23,6 +23,11 @@
 
 #define LIGHT_PIN	(4)
 
+#define API_PORT	(80)
+#define API_URL		"http://hamster-api.herokuapp.com"
+
+#define	WIFI_MAXTRY	(8)
+
 #define DEBUG_PRINT(TEXT) if (HAS_DEBUG) { SERIAL_DEBUG.println(TEXT); }
 
 void initEverything(void);

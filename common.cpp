@@ -119,6 +119,23 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *w
   
 }
 
+bool Common::TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light)
+{
+  WifiCredentials wifiinfos;
+  int tries = 0;
+  
+  storage->getWifi(&wifiinfos);
+  while (tries < WIFI_MAXTRY)
+    {
+      if (light)
+	light->blink();
+      if (Common::joinAccessPoint(storage, wifi, &wifiinfos))
+	  return (true);
+      tries++;
+    }
+  return (false);
+}
+
 bool Common::doRequest(Storage *storage, Wifi *wifi, String type, String request)
 {
   
