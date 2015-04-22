@@ -16,7 +16,7 @@ namespace Common {
   bool doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos);
   bool readAnswer(Storage *storage, Wifi *wifi);
   bool doRequest(Storage *storage, Wifi *wifi, String type, String request);
-  bool TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light);
+  bool TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light, WifiCredentials *wifiinfos);
 }
 
 #endif

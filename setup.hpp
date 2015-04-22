@@ -5,6 +5,7 @@
 #include "main.hpp"
 #include "storage.hpp"
 #include "wifi.hpp"
+#include "light.hpp"
 #include "common.hpp"
 
 #define SETUP_DELIM_CHAR ':'
@@ -15,7 +16,7 @@ namespace Setup {
   bool	  initAccessPoint(Storage *storage, Wifi *wifi);
   bool    sendSerialNumber(Storage *storage, Wifi *wifi);
   bool    receiveConnectionInformations(Storage *storage, Wifi *wifi);
-  void	  doBinding(Storage *storage, Wifi *wifi);
+  void	  doBinding(Storage *storage, Wifi *wifi, Light *light);
 }
 
 #endif

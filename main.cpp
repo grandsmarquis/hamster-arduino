@@ -35,6 +35,7 @@ void	initEverything()
     {
       
     }
+  light->blink();
   attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, RISING);
   attachInterrupt(INTERRUPT_WHEEL, wheelRisingInterrupt, RISING);
 }
@@ -48,7 +49,7 @@ void	resetButtonInterrupt()
   light->blink();
   light->high();
   delay(500);
-  Setup::doBinding(storage, wifi);
+  Setup::doBinding(storage, wifi, light);
   light->blink();
   light->blink();
   light->low();

@@ -5,6 +5,7 @@ Light::Light(int p)
   : pin(p)
 {
   pinMode(pin, OUTPUT);
+  this->low();
 }
 
 void Light::low()

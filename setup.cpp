@@ -90,7 +90,7 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
   return (false);
 }
 
-void Setup::doBinding(Storage *storage, Wifi *wifi)
+void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
 {
   /*
 
@@ -137,9 +137,12 @@ void Setup::doBinding(Storage *storage, Wifi *wifi)
   */
   WifiCredentials wifiinfos;
   storage->getWifi(&wifiinfos);
-  while (!Common::joinAccessPoint(storage, wifi, &wifiinfos))
+  if (Common::TryToJoinAccessPoint(storage, wifi, light, &wifiinfos))
     {
-      DEBUG_PRINT("[FAIL] Connecting to SSID");
+    }
+  else
+    {
+      return;
     }
   //if we are here we have a connection to the app
   //it means we have his IP and can receive and send datas throught TCP
