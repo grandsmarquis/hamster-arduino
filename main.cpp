@@ -36,6 +36,11 @@ void	initEverything()
       
     }
   attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, RISING);
+  attachInterrupt(INTERRUPT_WHEEL, wheelRisingInterrupt, RISING);
+}
+
+void	wheelRisingInterrupt()
+{
 }
 
 void	resetButtonInterrupt()

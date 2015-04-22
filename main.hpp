@@ -19,12 +19,14 @@
 #define SERIAL_WIFI	(Serial1)
 
 #define INTERRUPT_RESET	(0)
+#define INTERRUPT_WHEEL	(1)
 
-#define LIGHT_PIN	4
+#define LIGHT_PIN	(4)
 
 #define DEBUG_PRINT(TEXT) if (HAS_DEBUG) { SERIAL_DEBUG.println(TEXT); }
 
 void initEverything(void);
+void wheelRisingInterrupt(void);
 void resetButtonInterrupt(void);
 void ping(void);
 
