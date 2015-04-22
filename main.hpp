@@ -20,6 +20,8 @@
 
 #define INTERRUPT_RESET	(0)
 
+#define LIGHT_PIN	4
+
 #define DEBUG_PRINT(TEXT) if (HAS_DEBUG) { SERIAL_DEBUG.println(TEXT); }
 
 void initEverything(void);

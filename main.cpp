@@ -29,18 +29,24 @@ void	initEverything()
 
   storage = new Storage();
   wifi = new Wifi(SERIAL_WIFI);
-  light = new Light(2);
+  light = new Light(LIGHT_PIN);
   
   while (!wifi->isAlive())
     {
       
     }
-  attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, FALLING);
+  attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, RISING);
 }
 
 void	resetButtonInterrupt()
 {
+  light->blink();
+  light->high();
+  delay(500);
   Setup::doBinding(storage, wifi);
+  light->blink();
+  light->blink();
+  light->low();
 }
 
 void	setup()

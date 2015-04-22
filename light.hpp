@@ -14,6 +14,7 @@ public:
   Light(int pin);
   void low();
   void high();
+  void blink();
 };
 
 #endif
