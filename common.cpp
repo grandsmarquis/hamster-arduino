@@ -125,8 +125,6 @@ bool Common::TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light, Wi
   
   while (tries < WIFI_MAXTRY)
     {
-      if (light)
-	light->blink();
       if (Common::joinAccessPoint(storage, wifi, wifiinfos))
 	  return (true);
       tries++;

@@ -27,4 +27,12 @@ void Light::blink()
   this->high();
   delay(500);
   this->low();
+  delay(500);
+  this->high();
+  delay(500);
+  this->low();
+  delay(500);
+  this->high();
+  delay(500);
+  this->low();
 }

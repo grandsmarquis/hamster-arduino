@@ -11,7 +11,7 @@
 #endif
 #endif
 
-#define BINDING_PORT	(31665)
+#define BINDING_PORT	(31664)
 
 #define HAS_DEBUG	(1)
 #define SERIAL_DEBUG	(Serial)
@@ -21,12 +21,16 @@
 #define INTERRUPT_RESET	(0)
 #define INTERRUPT_WHEEL	(1)
 
-#define LIGHT_PIN	(4)
+#define LIGHT_PIN	(13)
 
 #define API_PORT	(80)
 #define API_URL		"http://hamster-api.herokuapp.com"
 
 #define	WIFI_MAXTRY	(8)
+
+#define	STATE_NOTHING	(0)
+#define STATE_RESET	(1)
+#define	STATE_HAMSTER	(2)
 
 #define DEBUG_PRINT(TEXT) if (HAS_DEBUG) { SERIAL_DEBUG.println(TEXT); }
 

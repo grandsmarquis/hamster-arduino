@@ -92,8 +92,6 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
 
 void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
 {
-  /*
-
   String ip;
   bool hasConnection = false;
   Setup::initAccessPoint(storage, wifi);
@@ -132,9 +130,6 @@ void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
     {
 
     }
-
-
-  */
   WifiCredentials wifiinfos;
   storage->getWifi(&wifiinfos);
   if (Common::TryToJoinAccessPoint(storage, wifi, light, &wifiinfos))
