@@ -16,7 +16,7 @@ SpeedMeter *sensor;
 Wifi	   *wifi;
 Storage	   *storage;
 Light	   *light;
-volatile int state = STATE_NOTHING;
+volatile t_state state = SLEEP;
 
 #define PORT    (31664)
 
@@ -28,12 +28,12 @@ void	ping()
 
 void	wheelRisingInterrupt()
 {
-  state = STATE_HAMSTER;
+  state = INT_HAMSTER;
 }
 
 void	resetButtonInterrupt()
 {
-  state = STATE_RESET;
+  state = INT_RESET;
 }
 
 void	initEverything()
@@ -49,13 +49,12 @@ void	initEverything()
     {
       
     }
+
   light->blink();
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
   DEBUG_PRINT("initEverything");
 }
-
-
 
 void	setup()
 {
@@ -63,35 +62,36 @@ void	setup()
   Tools::writeSerialNumber(storage, "SN-Lolilolol");
 }
 
+
+
 void	loop()
 {
-  if (state == STATE_RESET)
-    {
-      state = STATE_NOTHING;
-      DEBUG_PRINT("BIND");
-      light->blink();
-      light->high();
-      delay(500);
-      Setup::doBinding(storage, wifi, light);
-      light->blink();
-      light->blink();
-      light->low();
-    }
-  else if (state == STATE_HAMSTER)
-    {
-      state = STATE_NOTHING;
-      DEBUG_PRINT("HAMSTER TURN");
-    }
-  else
-    {
-      DEBUG_PRINT("GOING TO SLEEP");
-      attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, LOW);
-      attachInterrupt(INTERRUPT_WHEEL, wheelRisingInterrupt, LOW);
-      delay(500);
-      sleep_mode();
-      sleep_disable();
-      detachInterrupt(INTERRUPT_RESET);
-      detachInterrupt(INTERRUPT_WHEEL);
-      DEBUG_PRINT("GETTING BACK FROM SLEEP");
-    }
+  switch (state) {
+  case SLEEP:
+    DEBUG_PRINT("GOING TO SLEEP");
+    attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, LOW);
+    attachInterrupt(INTERRUPT_WHEEL, wheelRisingInterrupt, LOW);
+    delay(500);
+    sleep_mode();
+    sleep_disable();
+    detachInterrupt(INTERRUPT_RESET);
+    detachInterrupt(INTERRUPT_WHEEL);
+    DEBUG_PRINT("GETTING BACK FROM SLEEP");
+    break;
+  case INT_RESET:
+    state = SLEEP;
+    DEBUG_PRINT("BIND");
+    light->blink();
+    light->high();
+    Setup::doBinding(storage, wifi, light);
+    light->low();
+    break;
+  case INT_HAMSTER:
+    state = SLEEP;
+    DEBUG_PRINT("HAMSTER TURN");
+    break;
+  case HAMSTER_COLLECT:
+    break;
+  }
+
 }

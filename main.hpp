@@ -28,9 +28,12 @@
 
 #define	WIFI_MAXTRY	(8)
 
-#define	STATE_NOTHING	(0)
-#define STATE_RESET	(1)
-#define	STATE_HAMSTER	(2)
+typedef enum {
+  SLEEP,
+  INT_RESET,
+  INT_HAMSTER,
+  HAMSTER_COLLECT
+} t_state;
 
 #define DEBUG_PRINT(TEXT) if (HAS_DEBUG) { SERIAL_DEBUG.println(TEXT); }
 
