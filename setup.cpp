@@ -5,7 +5,6 @@ bool  Setup::initAccessPoint(Storage *storage, Wifi *wifi)
 {
   bool res;
   res = wifi->createAP("HAMSTER-SPINNER", "password");
-  //  res = wifi->disableMUX();
   return (res);
 }
 
@@ -34,7 +33,6 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
   String id;
   String ssid;
   String password;
-
 
   while ((len =  wifi->receive(buffer, 120, 1000)))
     {

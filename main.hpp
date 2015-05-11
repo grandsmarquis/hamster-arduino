@@ -26,6 +26,10 @@
 #define API_PORT	(80)
 #define API_URL		"http://hamster-api.herokuapp.com"
 
+#define TIME_PERIOD	(5000)
+#define MAX_VALUES	(50)
+#define	MAX_TIME_SLEEP	(5)
+
 #define	WIFI_MAXTRY	(8)
 
 typedef enum {

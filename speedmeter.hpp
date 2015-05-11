@@ -3,7 +3,7 @@
 #ifndef		__H_SPEEDMETER_
 #define		__H_SPEEDMETER_
 
-#include	"../main.hpp"
+#include	"main.hpp"
 
 class		SpeedMeter {
 

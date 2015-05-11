@@ -2,7 +2,7 @@
 #include <avr/sleep.h>
 
 #include "main.hpp"
-#include "speedmeter/speedmeter.hpp"
+#include "speedmeter.hpp"
 #include "wifi.hpp"
 #include "button.hpp"
 #include "storage.hpp"
@@ -61,8 +61,6 @@ void	setup()
   initEverything();
   Tools::writeSerialNumber(storage, "SN-Lolilolol");
 }
-
-
 
 void	loop()
 {
