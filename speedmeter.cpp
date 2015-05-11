@@ -27,6 +27,5 @@ void	SpeedMeter::update()
 	  Serial.println(_last_interval);
 	}
     }
-  _previous_state = state;
-  
+  _previous_state = state;  
 }

@@ -3,6 +3,11 @@
 #ifndef		__H_SPEEDMETER_
 #define		__H_SPEEDMETER_
 
+typedef struct {
+  int		time;
+  int		value;
+}		speed_instant;
+
 #include	"main.hpp"
 
 class		SpeedMeter {

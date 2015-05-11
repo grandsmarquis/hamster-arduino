@@ -4,10 +4,13 @@
 bool Common::joinAccessPoint(Storage *storage, Wifi *wifi, WifiCredentials *wifiinfos)
 {
   bool res = false;
+#ifdef DEBUG
   DEBUG_PRINT("__JOINING:"  );
   DEBUG_PRINT("SSID: " + String(wifiinfos->SSID));
   DEBUG_PRINT("PASSWORD: " + String(wifiinfos->password));
+#endif
   res = wifi->joinAP(String(wifiinfos->SSID), String(wifiinfos->password));
+#ifdef DEBUG
   if (res)
     {
       DEBUG_PRINT("[OK] Joined AP");
@@ -20,6 +23,7 @@ bool Common::joinAccessPoint(Storage *storage, Wifi *wifi, WifiCredentials *wifi
     {
       DEBUG_PRINT(wifi->getLocalIP().c_str());
     }
+#endif
   wifi->disableMUX();
   return (res);
   
@@ -55,7 +59,9 @@ bool Common::readAnswer(Storage *storage, Wifi * wifi)
 	}
       if (state >= 2)
 	{
-	  Serial.println(answer);
+#ifdef DEBUG
+	  DEBUG_PRINT(answer);
+#endif
 	  if (answer == "success")
 	    return (true);
 	  return (false);
@@ -88,33 +94,22 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *w
   request += "\n\n";
   request += content;
   String url = API_URL;
-  Serial.println(url);
-  Serial.println(request);
+#ifdef DEBUG
+  DEBUG_PRINT(url);
+  DEBUG_PRINT(request);
+#endif
   if (wifi->createTCP(url, API_PORT))
     {
       delay(200);
       DEBUG_PRINT("[OK] creating connection to AvailableURL");
-      if (wifi->send((const uint8_t*)request.c_str(), request.length()))
-	{
-	  DEBUG_PRINT("[OK] Sent request");
-	}
-      else
-	{
-	  DEBUG_PRINT("[FAIL] Sent request");
-	}
-      if (Common::readAnswer(storage, wifi))
-	{
-	  DEBUG_PRINT("[OK] SUCCESS SENDING AVAILABLE INFOS");
-	}
-      else
-	{
-	  DEBUG_PRINT("[FAIL] !!!!!");
-	}
-	
+      wifi->send((const uint8_t*)request.c_str(), request.length());
+      Common::readAnswer(storage, wifi);
     }
   else
     {
+#ifdef DEBUG
       DEBUG_PRINT("[FAIL] creating connection to AvailableURL");
+#endif
     }
   
 }

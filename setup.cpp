@@ -36,10 +36,8 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
 
   while ((len =  wifi->receive(buffer, 120, 1000)))
     {
-      DEBUG_PRINT("receive: ");
       buffer[len] = 0;
       String line((char *) buffer);
-      Serial.println(line);
       for (int i = 0; i < len; i++)
 	{
 	  char c = (char) buffer[i];
@@ -77,9 +75,11 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
 	  ssid.toCharArray((w.SSID), SSID_LEN);
 	  password.toCharArray((w.password), PASSWORD_LEN);
 	  id.toCharArray((w.apikey), API_LEN);
+#ifdef DEBUG
 	  DEBUG_PRINT(w.SSID);
 	  DEBUG_PRINT(w.password);
 	  DEBUG_PRINT(w.apikey);
+#endif
 	  storage->setWifi(&w);
 	  return (true);
 	}
@@ -98,27 +98,37 @@ void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
   while (!hasConnection)
     {
       delay(1000);
+#ifdef DEBUG
       DEBUG_PRINT("[Waiting] Waiting for connecting device");
+#endif
       String res = wifi->getConnectedIPs();
       if (-1 != res.indexOf(','))
 	{
 	  delay(500);
 	  ip = res.substring(0, res.indexOf(','));
+#ifdef DEBUG
 	  DEBUG_PRINT("[START] Try TCP with : " + ip);
-	  if (wifi->createTCP(ip, BINDING_PORT))
+#endif
+	  if (wifi->createTCP(ip, SETUP_PORT))
 	    hasConnection = true;
 	}
     }
+#ifdef DEBUG
   DEBUG_PRINT("[OK] We are connected");
+#endif
   delay(500);
   while (!Setup::sendSerialNumber(storage, wifi))
     {
       delay(1000);
+#ifdef DEBUG
       DEBUG_PRINT("[OK] SERIAL SENT");
+#endif
     }
   while (!Setup::receiveConnectionInformations(storage, wifi))
     {
+#ifdef DEBUG
       DEBUG_PRINT("[OK] Waiting to receive connection infos");
+#endif
       delay(1000);
     }
   //  Serial.println("[OK] connection infos received : " + storage->ssid + " " + storage->password);
@@ -139,7 +149,9 @@ void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
     }
   //if we are here we have a connection to the app
   //it means we have his IP and can receive and send datas throught TCP
+#ifdef DEBUG
   DEBUG_PRINT("[OK] We try to make request");
+#endif
   delay(1000);
   Common::doAvailableRequest(storage, wifi, &wifiinfos);
 }

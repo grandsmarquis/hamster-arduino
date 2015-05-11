@@ -8,8 +8,9 @@
 #include "light.hpp"
 #include "common.hpp"
 
-#define SETUP_DELIM_CHAR ':'
-#define SETUP_JOIN_TRIES 5
+#define SETUP_DELIM_CHAR	':'
+#define SETUP_JOIN_TRIES	(5)
+#define	SETUP_PORT		(31664)
 
 namespace Setup {
 

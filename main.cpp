@@ -16,14 +16,16 @@ SpeedMeter *sensor;
 Wifi	   *wifi;
 Storage	   *storage;
 Light	   *light;
+
 volatile t_state state = SLEEP;
 
-#define PORT    (31664)
 
 void	ping()
 {
   String version = wifi->getVersion();
+#ifdef DEBUG
   DEBUG_PRINT("Version :: " + version);
+#endif
 }
 
 void	wheelRisingInterrupt()
@@ -38,9 +40,10 @@ void	resetButtonInterrupt()
 
 void	initEverything()
 {
-  
-  Serial.begin(9600);
-  DEBUG_PRINT("initEverything");
+#ifdef DEBUG
+  SERIAL_DEBUG.begin(9600);
+  DEBUG_PRINT("Start Everything");
+#endif
   storage = new Storage();
   wifi = new Wifi(SERIAL_WIFI);
   light = new Light(LIGHT_PIN);
@@ -53,7 +56,9 @@ void	initEverything()
   light->blink();
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_enable();
-  DEBUG_PRINT("initEverything");
+#ifdef DEBUG
+  DEBUG_PRINT("init everything was done");
+#endif
 }
 
 void	setup()
@@ -66,7 +71,9 @@ void	loop()
 {
   switch (state) {
   case SLEEP:
+#ifdef DEBUG
     DEBUG_PRINT("GOING TO SLEEP");
+#endif
     attachInterrupt(INTERRUPT_RESET, resetButtonInterrupt, LOW);
     attachInterrupt(INTERRUPT_WHEEL, wheelRisingInterrupt, LOW);
     delay(500);
@@ -74,20 +81,29 @@ void	loop()
     sleep_disable();
     detachInterrupt(INTERRUPT_RESET);
     detachInterrupt(INTERRUPT_WHEEL);
+#ifdef DEBUG
     DEBUG_PRINT("GETTING BACK FROM SLEEP");
+#endif
     break;
+    
   case INT_RESET:
     state = SLEEP;
-    DEBUG_PRINT("BIND");
+#ifdef DEBUG
+    DEBUG_PRINT("INT FROM SETUP");
+#endif
     light->blink();
     light->high();
     Setup::doBinding(storage, wifi, light);
     light->low();
     break;
+    
   case INT_HAMSTER:
     state = SLEEP;
-    DEBUG_PRINT("HAMSTER TURN");
+#ifdef DEBUG
+    DEBUG_PRINT("INT FROM HAMSTER");
+#endif
     break;
+    
   case HAMSTER_COLLECT:
     break;
   }

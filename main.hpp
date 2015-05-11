@@ -11,9 +11,7 @@
 #endif
 #endif
 
-#define BINDING_PORT	(31664)
-
-#define HAS_DEBUG	(1)
+//#define DEBUG		(1)
 #define SERIAL_DEBUG	(Serial)
 
 #define SERIAL_WIFI	(Serial1)
@@ -39,7 +37,7 @@ typedef enum {
   HAMSTER_COLLECT
 } t_state;
 
-#define DEBUG_PRINT(TEXT) if (HAS_DEBUG) { SERIAL_DEBUG.println(TEXT); }
+#define DEBUG_PRINT(TEXT) SERIAL_DEBUG.println(TEXT)
 
 void initEverything(void);
 void wheelRisingInterrupt(void);
