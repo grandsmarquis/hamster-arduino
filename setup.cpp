@@ -38,7 +38,7 @@ bool    Setup::receiveConnectionInformations(Storage *storage, Wifi *wifi)
     {
       buffer[len] = 0;
       String line((char *) buffer);
-      for (int i = 0; i < len; i++)
+      for (uint32_t i = 0; i < len; i++)
 	{
 	  char c = (char) buffer[i];
 	  Serial.println(c);
@@ -131,8 +131,7 @@ void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
 #endif
       delay(1000);
     }
-  //  Serial.println("[OK] connection infos received : " + storage->ssid + " " + storage->password);
-  delay(2000);
+  delay(500);
   wifi->releaseTCP();
   while (!wifi->isAlive())
     {

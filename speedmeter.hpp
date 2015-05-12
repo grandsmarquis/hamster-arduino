@@ -3,12 +3,18 @@
 #ifndef		__H_SPEEDMETER_
 #define		__H_SPEEDMETER_
 
+#include	"main.hpp"
+
 typedef struct {
   int		time;
   int		value;
 }		speed_instant;
 
-#include	"main.hpp"
+typedef struct {
+  int		current;
+  unsigned long	current_time;
+  speed_instant	values[MAX_VALUES];
+}		speed_values;
 
 class		SpeedMeter {
 
@@ -28,14 +34,9 @@ class		SpeedMeter {
   
  public:
 
-  /*
-  ** pin : digital pin
-  ** sensors: number of sensors on wheel
-  ** radius: radius of the wheel (cm)
-  */
   SpeedMeter(int pin, int sensors, int radius);
 
-  void update();
+  void update(unsigned long time, speed_values *values);
   
 };
 

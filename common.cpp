@@ -42,7 +42,7 @@ bool Common::readAnswer(Storage *storage, Wifi * wifi)
       buffer[len] = 0;
       String line((char *) buffer);
       Serial.println(line);
-      for (int i = 0; i < len; i++)
+      for (uint32_t i = 0; i < len; i++)
 	{
 	  char c = (char) buffer[i];
 	  Serial.println(c);

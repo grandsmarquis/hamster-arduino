@@ -8,24 +8,34 @@ SpeedMeter::SpeedMeter(int pin, int sensors, int radius)
   pinMode(_pin, INPUT);
 }
 
-void	SpeedMeter::update()
+void	SpeedMeter::update(unsigned long time, speed_values *values)
 {
   int state = digitalRead(_pin);
 
   if (state != _previous_state && state == LOW)
     {
-      _last_interval = millis() - _last_fall;
-      _last_fall = millis();
-      /*      if (_last_interval > 2)
+      _last_interval = time - _last_fall;
+      _last_fall = time;
+
+      if (values->current_time == 0)
 	{
-	  // We don't want to activate wheel if it is for only one turn
+	  values->current_time = time;
 	}
-	else */
+      else if (values->current_time + TIME_PERIOD < time)
+	{
+	  values->current = values->current + 1;
+	}
+      if (values->current > MAX_VALUES)
+	{
+	  //	  return (true);
+	}
+      values->values[values->current].value = values->values[values->current].value + 1;
+      
       if (_last_interval > 100)
 	{
-	  _speed = (_radius / (float) _last_interval) * 360.0; //Something like this
-	  Serial.println(_last_interval);
+
 	}
     }
   _previous_state = state;  
 }
+

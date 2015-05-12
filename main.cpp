@@ -17,6 +17,8 @@ Wifi	   *wifi;
 Storage	   *storage;
 Light	   *light;
 
+speed_values values;
+
 volatile t_state state = SLEEP;
 
 
@@ -105,6 +107,12 @@ void	loop()
     break;
     
   case HAMSTER_COLLECT:
+
+    sensor->update(millis(), &values);
+    
+    break;
+
+  case HAMSTER_SENDING:
     break;
   }
 
