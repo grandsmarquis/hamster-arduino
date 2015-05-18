@@ -11,7 +11,7 @@
 #endif
 #endif
 
-//#define DEBUG		(1)
+#define DEBUG		(1)
 #define SERIAL_DEBUG	(Serial)
 
 #define SERIAL_WIFI	(Serial1)

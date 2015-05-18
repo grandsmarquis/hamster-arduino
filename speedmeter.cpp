@@ -5,7 +5,7 @@ SpeedMeter::SpeedMeter(int pin, int sensors, int radius)
   :_pin(pin), _sensors(sensors), _radius(radius), _previous_state(0), _speed(0.0), _distance(0.0),
    _last_fall(0), _last_interval(0)
 {
-  pinMode(_pin, INPUT);
+  //  pinMode(_pin, INPUT);
 }
 
 void	SpeedMeter::update(unsigned long time, speed_values *values)
@@ -19,26 +19,39 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
 #endif
       values->current_time = time;
     }
+
+  if (values->current_time + TIME_PERIOD < time)
+    {
+#ifdef DEBUG
+      DEBUG_PRINT("Going to next timeperiod");
+#endif
+      values->current = values->current + 1;
+      values->current_time = time;
+    }
+  
+  
+  if (values->current > MAX_VALUES)
+    {
+#ifdef DEBUG
+      DEBUG_PRINT("Values is FULL!!");
+#endif
+      values->state = FULL;
+      return;
+    }
+
+#ifdef DEBUG
+  if (state == HIGH)
+      DEBUG_PRINT("HIGH");
+  else
+    DEBUG_PRINT("LOW");
+#endif
+
   
   if (state != _previous_state && state == LOW)
     {
       _last_interval = time - _last_fall;
       _last_fall = time;
 
-      if (values->current_time + TIME_PERIOD < time)
-	{
-#ifdef DEBUG
-	  DEBUG_PRINT("Going to next timeperiod");
-#endif
-	  values->current = values->current + 1;
-	}
-
-      
-      if (values->current > MAX_VALUES)
-	{
-	  values->state = FULL;
-	  return;
-	}
   
       
       if (_last_interval > 100)

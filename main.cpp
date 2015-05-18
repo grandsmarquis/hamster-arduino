@@ -49,7 +49,7 @@ void	initEverything()
   storage = new Storage();
   wifi = new Wifi(SERIAL_WIFI);
   light = new Light(LIGHT_PIN);
-
+  sensor = new SpeedMeter(3, 1, 5);
   while (!wifi->isAlive())
     {
       
@@ -104,6 +104,7 @@ void	loop()
     
   case INT_HAMSTER:
     state = HAMSTER_COLLECT;
+    pinMode(3, INPUT);
 #ifdef DEBUG
     DEBUG_PRINT("INT FROM HAMSTER");
 #endif
@@ -113,7 +114,7 @@ void	loop()
 
     sensor->update(millis(), &values);
 
-    if (values->state == FULL || values->state == INACTIVE)
+    if (values.state == FULL || values.state == INACTIVE)
       {
 	state = HAMSTER_SENDING;
       }
