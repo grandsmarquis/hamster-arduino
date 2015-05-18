@@ -5,6 +5,13 @@
 
 #include	"main.hpp"
 
+typedef enum {
+  EMPTY,
+  INDETERMINATE,
+  FULL,
+  INACTIVE
+}		speed_state;
+
 typedef struct {
   int		time;
   int		value;
@@ -14,6 +21,7 @@ typedef struct {
   int		current;
   unsigned long	current_time;
   speed_instant	values[MAX_VALUES];
+  speed_state	state;
 }		speed_values;
 
 class		SpeedMeter {

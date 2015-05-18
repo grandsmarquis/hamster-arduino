@@ -1,5 +1,8 @@
 
+
 #include "tools.hpp"
+
+#ifdef DEBUG
 
 void Tools::writeSerialNumber(Storage *storage, String serial)
 {
@@ -7,3 +10,5 @@ void Tools::writeSerialNumber(Storage *storage, String serial)
   serial.toCharArray(sn.serial, SERIAL_LEN);
   storage->setSerial(&sn);
 }
+
+#endif

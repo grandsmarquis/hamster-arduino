@@ -25,8 +25,7 @@ bool Common::joinAccessPoint(Storage *storage, Wifi *wifi, WifiCredentials *wifi
     }
 #endif
   wifi->disableMUX();
-  return (res);
-  
+  return (res);  
 }
 
 bool Common::readAnswer(Storage *storage, Wifi * wifi)
@@ -103,7 +102,7 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *w
       delay(200);
       DEBUG_PRINT("[OK] creating connection to AvailableURL");
       wifi->send((const uint8_t*)request.c_str(), request.length());
-      Common::readAnswer(storage, wifi);
+      res = Common::readAnswer(storage, wifi);
     }
   else
     {
@@ -111,7 +110,7 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *w
       DEBUG_PRINT("[FAIL] creating connection to AvailableURL");
 #endif
     }
-  
+  return (res);
 }
 
 bool Common::TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light, WifiCredentials *wifiinfos)
@@ -129,5 +128,6 @@ bool Common::TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light, Wi
 
 bool Common::doRequest(Storage *storage, Wifi *wifi, String type, String request)
 {
-  
+
+  return (true);
 }

@@ -66,7 +66,10 @@ void	initEverything()
 void	setup()
 {
   initEverything();
+
+#ifdef DEBUG
   Tools::writeSerialNumber(storage, "SN-Lolilolol");
+#endif
 }
 
 void	loop()
@@ -100,7 +103,7 @@ void	loop()
     break;
     
   case INT_HAMSTER:
-    state = SLEEP;
+    state = HAMSTER_COLLECT;
 #ifdef DEBUG
     DEBUG_PRINT("INT FROM HAMSTER");
 #endif
@@ -109,10 +112,18 @@ void	loop()
   case HAMSTER_COLLECT:
 
     sensor->update(millis(), &values);
+
+    if (values->state == FULL || values->state == INACTIVE)
+      {
+	state = HAMSTER_SENDING;
+      }
     
     break;
 
   case HAMSTER_SENDING:
+#ifdef DEBUG
+    DEBUG_PRINT("TRY TO SEND");
+#endif
     break;
   }
 

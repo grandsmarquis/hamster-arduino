@@ -12,28 +12,38 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
 {
   int state = digitalRead(_pin);
 
+  if (values->current_time == 0)
+    {
+#ifdef DEBUG
+      DEBUG_PRINT("Beginning to fill table");
+#endif
+      values->current_time = time;
+    }
+  
   if (state != _previous_state && state == LOW)
     {
       _last_interval = time - _last_fall;
       _last_fall = time;
 
-      if (values->current_time == 0)
+      if (values->current_time + TIME_PERIOD < time)
 	{
-	  values->current_time = time;
-	}
-      else if (values->current_time + TIME_PERIOD < time)
-	{
+#ifdef DEBUG
+	  DEBUG_PRINT("Going to next timeperiod");
+#endif
 	  values->current = values->current + 1;
 	}
+
+      
       if (values->current > MAX_VALUES)
 	{
-	  //	  return (true);
+	  values->state = FULL;
+	  return;
 	}
-      values->values[values->current].value = values->values[values->current].value + 1;
+  
       
       if (_last_interval > 100)
 	{
-
+	  values->values[values->current].value = values->values[values->current].value + 1;
 	}
     }
   _previous_state = state;  
