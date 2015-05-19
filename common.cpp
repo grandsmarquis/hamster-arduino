@@ -131,3 +131,19 @@ bool Common::doRequest(Storage *storage, Wifi *wifi, String type, String request
 
   return (true);
 }
+
+bool Common::tryToSendValues(Storage *storage, Wifi *wifi, Light *light, speed_values *values)
+{
+  WifiCredentials wifiinfos;
+  
+  storage->getWifi(&wifiinfos);
+  if (Common::TryToJoinAccessPoint(storage, wifi, light, &wifiinfos))
+    {
+      return (true);
+    }
+  else
+    {
+      return false;
+    }
+  
+}

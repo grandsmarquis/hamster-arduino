@@ -16,8 +16,8 @@
 
 #define SERIAL_WIFI	(Serial1)
 
-#define INTERRUPT_RESET	(0)
-#define INTERRUPT_WHEEL	(1)
+#define INTERRUPT_RESET	(1)
+#define INTERRUPT_WHEEL	(0)
 
 #define LIGHT_PIN	(13)
 

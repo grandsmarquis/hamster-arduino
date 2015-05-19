@@ -6,6 +6,7 @@
 #include "storage.hpp"
 #include "wifi.hpp"
 #include "light.hpp"
+#include "speedmeter.hpp"
 
 #define API_PUT API_URL "/products/"
 
@@ -17,6 +18,7 @@ namespace Common {
   bool readAnswer(Storage *storage, Wifi *wifi);
   bool doRequest(Storage *storage, Wifi *wifi, String type, String request);
   bool TryToJoinAccessPoint(Storage *storage, Wifi *wifi, Light *light, WifiCredentials *wifiinfos);
+  bool tryToSendValues(Storage *storage, Wifi *wifi, Light *light, speed_values *values);
 }
 
 #endif

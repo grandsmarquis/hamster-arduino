@@ -92,6 +92,7 @@ void Setup::doBinding(Storage *storage, Wifi *wifi, Light *light)
 {
   String ip;
   bool hasConnection = false;
+
   Setup::initAccessPoint(storage, wifi);
   delay(1000);
   wifi->disableMUX();
