@@ -13,7 +13,7 @@ typedef enum {
 }		speed_state;
 
 typedef struct {
-  int		time;
+  unsigned long	time;
   int		value;
 }		speed_instant;
 
