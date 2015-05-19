@@ -45,7 +45,7 @@ class		SpeedMeter {
   SpeedMeter(int pin, int sensors, int radius);
 
   void update(unsigned long time, speed_values *values);
-  
+  void clean(speed_values *values);
 };
 
 #endif

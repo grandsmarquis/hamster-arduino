@@ -139,6 +139,7 @@ bool Common::tryToSendValues(Storage *storage, Wifi *wifi, Light *light, speed_v
   storage->getWifi(&wifiinfos);
   if (Common::TryToJoinAccessPoint(storage, wifi, light, &wifiinfos))
     {
+      
       return (true);
     }
   else

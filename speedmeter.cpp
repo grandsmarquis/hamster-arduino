@@ -18,6 +18,8 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
       DEBUG_PRINT("Beginning to fill table");
 #endif
       values->current_time = time;
+      values->values[values->current].value = 0;
+      values->values[values->current].time = time;
     }
 
   if (values->current_time + TIME_PERIOD < time)
@@ -25,12 +27,17 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
 #ifdef DEBUG
       DEBUG_PRINT("Going to next timeperiod");
 #endif
-      if (time - _last_fall > 2 * TIME_PERIOD)
+      if (time - _last_fall > 4 * TIME_PERIOD)
 	{
 	  values->state = INACTIVE;
 	  return;
 	}
-      values->current = values->current + 1;
+      if (values->values[values->current].value > 0)
+	{
+	  values->current = values->current + 1;
+	}
+      values->values[values->current].value = 0;
+      values->values[values->current].time = time;
       values->current_time = time;
     }
   
@@ -70,3 +77,20 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
   _previous_state = state;  
 }
 
+void SpeedMeter::clean(speed_values *values)
+{
+  values->state = EMPTY;
+  values->current = 0;
+  values->current_time = 0;
+
+  int i = 0;
+  while (i < MAX_VALUES)
+    {
+      values->values[i].time = 0;
+      values->values[i].value = 0;
+      i++;
+    }
+#ifdef DEBUG
+  DEBUG_PRINT("Values are cleaned");
+#endif
+}

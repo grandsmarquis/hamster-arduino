@@ -125,7 +125,19 @@ void	loop()
 #ifdef DEBUG
     DEBUG_PRINT("TRY TO SEND");
 #endif
-    
+    if (Common::tryToSendValues(storage, wifi, light, &values))
+      {
+#ifdef DEBUG
+	DEBUG_PRINT("SENT SUCCESSFULL");
+#endif	
+      }
+    else
+      {
+#ifdef DEBUG
+	DEBUG_PRINT("SENT FAILURE");
+#endif
+      }
+    sensor->clean(&values);
     break;
   }
 
