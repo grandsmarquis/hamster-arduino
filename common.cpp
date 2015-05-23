@@ -147,7 +147,7 @@ bool Common::tryToSendValues(Storage *storage, Wifi *wifi, Light *light, speed_v
 	  DEBUG_PRINT(request);
 #endif
 	  request += "{\"time\" = \"";
-	  request += (int) (millis() - values->values[i].time);
+	  request += (millis() - values->values[i].time);
 	  request += "\", \"value\" = \"";
 	  request += (int) values->values[i].value;
 	  request += "\"}";
