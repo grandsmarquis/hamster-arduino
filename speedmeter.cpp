@@ -42,7 +42,7 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
     }
   
   
-  if (values->current > MAX_VALUES)
+  if (values->current >=  MAX_VALUES)
     {
 #ifdef DEBUG
       DEBUG_PRINT("Values is FULL!!");
@@ -50,22 +50,19 @@ void	SpeedMeter::update(unsigned long time, speed_values *values)
       values->state = FULL;
       return;
     }
-
+  /*
 #ifdef DEBUG
   if (state == HIGH)
     DEBUG_PRINT("HIGH");
   else
     DEBUG_PRINT("LOW");
 #endif
-
+  */
   
   if (state != _previous_state && state == LOW)
     {
       _last_interval = time - _last_fall;
-      _last_fall = time;
-
-  
-      
+      _last_fall = time;      
       if (_last_interval > 100)
 	{
 #ifdef DEBUG

@@ -25,8 +25,9 @@
 #define API_URL		"http://hamster-api.herokuapp.com"
 
 #define TIME_PERIOD	(5000)
-#define MAX_VALUES	(50)
+#define MAX_VALUES	(5)
 #define	MAX_TIME_SLEEP	(5)
+#define MIN_VALUES_SEND	(2)
 
 #define	WIFI_MAXTRY	(8)
 

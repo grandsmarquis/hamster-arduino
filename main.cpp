@@ -125,19 +125,29 @@ void	loop()
 #ifdef DEBUG
     DEBUG_PRINT("TRY TO SEND");
 #endif
-    if (Common::tryToSendValues(storage, wifi, light, &values))
+    if (values.current >= MIN_VALUES_SEND)
       {
+	if (Common::tryToSendValues(storage, wifi, light, &values))
+	  {
 #ifdef DEBUG
-	DEBUG_PRINT("SENT SUCCESSFULL");
+	    DEBUG_PRINT("SENT SUCCESSFULL");
 #endif	
+	  }
+	else
+	  {
+#ifdef DEBUG
+	    DEBUG_PRINT("SENT FAILURE");
+#endif
+	  }
       }
     else
       {
 #ifdef DEBUG
-	DEBUG_PRINT("SENT FAILURE");
-#endif
+    DEBUG_PRINT("NOT ENOUGH VALUES TO SEND");
+#endif	
       }
     sensor->clean(&values);
+    state = SLEEP;
     break;
   }
 

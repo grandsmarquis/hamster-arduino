@@ -135,11 +135,27 @@ bool Common::doRequest(Storage *storage, Wifi *wifi, String type, String request
 bool Common::tryToSendValues(Storage *storage, Wifi *wifi, Light *light, speed_values *values)
 {
   WifiCredentials wifiinfos;
-  
+  ping();
   storage->getWifi(&wifiinfos);
   if (Common::TryToJoinAccessPoint(storage, wifi, light, &wifiinfos))
     {
-      
+      String request = "";
+      int i = 0;
+      while (i < MAX_VALUES && values->values[i].value > 0)
+	{
+#ifdef DEBUG
+	  DEBUG_PRINT(request);
+#endif
+	  request += "{\"time\" = \"";
+	  request += (int) (millis() - values->values[i].time);
+	  request += "\", \"value\" = \"";
+	  request += (int) values->values[i].value;
+	  request += "\"}";
+	  i++;
+	}
+#ifdef DEBUG
+      DEBUG_PRINT(request);
+#endif
       return (true);
     }
   else
