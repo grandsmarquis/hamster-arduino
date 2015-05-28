@@ -24,6 +24,9 @@
 #define API_PORT	(3000)
 #define API_URL		"89.3.174.175"
 
+//#define API_PORT	(80)
+//#define API_URL	"http://hamster-api.heroku.com/" ??
+
 #define TIME_PERIOD	(5000)
 #define MAX_VALUES	(5)
 #define	MAX_TIME_SLEEP	(5)

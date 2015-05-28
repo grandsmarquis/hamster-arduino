@@ -140,20 +140,25 @@ bool Common::tryToSendValues(Storage *storage, Wifi *wifi, Light *light, speed_v
   storage->getWifi(&wifiinfos);
   if (Common::TryToJoinAccessPoint(storage, wifi, light, &wifiinfos))
     {
+      SerialNumber sn;
+      storage->getSerial(&sn);
       String request = "";
       int i = 0;
+      request += "{\"serial_number\":";
+      request += (sn.serial);
+      request += "\", data : [";
       while (i < MAX_VALUES && values->values[i].value > 0)
 	{
-#ifdef DEBUG
-	  DEBUG_PRINT(request);
-#endif
-	  request += "{\"time\" = \"";
-	  request += (millis() - values->values[i].time);
-	  request += "\", \"value\" = \"";
+	  if (i != 0)
+	    request += ",";
+	  request += "{\"time\" = ";
+	  request += (int) (millis() - values->values[i].time) / 1000;
+	  request += ", \"value\" = ";
 	  request += (int) values->values[i].value;
-	  request += "\"}";
+	  request += "}";
 	  i++;
 	}
+      request += "]}";
 #ifdef DEBUG
       DEBUG_PRINT(request);
 #endif
