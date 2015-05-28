@@ -21,8 +21,8 @@
 
 #define LIGHT_PIN	(13)
 
-#define API_PORT	(80)
-#define API_URL		"http://hamster-api.herokuapp.com"
+#define API_PORT	(3000)
+#define API_URL		"89.3.174.175"
 
 #define TIME_PERIOD	(5000)
 #define MAX_VALUES	(5)

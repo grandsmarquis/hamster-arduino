@@ -74,20 +74,21 @@ bool Common::doAvailableRequest(Storage *storage, Wifi *wifi, WifiCredentials *w
   bool res = false;
   
   
-  String request = "POST ";
+  String request = "PUT ";
   {
     SerialNumber sn;
     storage->getSerial(&sn);
     request += "/products/" + String(sn.serial);    
   }
 
-  request += "HTTP/1.1";
+  request += " HTTP/1.1";
   String content = "{\"device_key\" : \"" + String(wifiinfos->apikey);
   content += "\"}";
   request += "\n";
   request += "Host: ";
   request += API_URL;
   request += "\nContent-Type: application/json";
+  request += "\nAccept: */*";
   request += "\nContent-Length: ";
   request += String(content.length());
   request += "\n\n";

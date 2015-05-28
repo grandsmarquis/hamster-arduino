@@ -68,7 +68,7 @@ void	setup()
   initEverything();
 
 #ifdef DEBUG
-  Tools::writeSerialNumber(storage, "SN-Lolilolol");
+  Tools::writeSerialNumber(storage, "SN-IV7SFEOI85");
 #endif
 }
 
